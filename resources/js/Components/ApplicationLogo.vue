@@ -1,0 +1,10 @@
+<template>
+    <img
+        src="https://assets-global.website-files.com/5e38423084bb96caf84a40ce/658d7d9c4205f2875438666e_street-group-logo-white.svg"
+        loading="lazy"
+        alt=""
+        class="logo"
+        width="130px"
+        height="130px"
+    />
+</template>
