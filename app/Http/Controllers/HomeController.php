@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    // Method to handle file upload request
     public function upload(Request $request)
     {
         // Mock upload for now
@@ -27,7 +28,7 @@ class HomeController extends Controller
             ['title' => 'Mrs', 'first_name' => 'Faye', 'initial' => null, 'last_name' => 'Hughes-Eastwood'],
             ['title' => 'Mr', 'first_name' => 'F.', 'initial' => null, 'last_name' => 'Fredrickson'],
         ];
-
+        // Returning the parsed data as a JSON response
         return response()->json($parsedData);
     }
 }

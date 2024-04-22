@@ -24,6 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route for handling file uploads
+// Matches POST requests to /upload 
+// Calls upload method on App\Http\Controllers\HomeController
 Route::post('/upload', 'App\Http\Controllers\HomeController@upload');
+
 
 require __DIR__ . '/auth.php';

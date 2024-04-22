@@ -4,19 +4,23 @@ import { Head } from "@inertiajs/vue3";
 </script>
 
 <template>
+    <!-- Setting the page title -->
     <Head title="Dashboard" />
 
+    <!-- Using AuthenticatedLayout as the main layout component -->
     <AuthenticatedLayout>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-800 mb-10">
+                        <!-- Title for the dashboard -->
                         <h1
                             class="text-4xl font-bold m-5 text-center tracking-wide text-gray-700"
                         >
                             Homeowner Names Dashboard
                         </h1>
 
+                        <!-- Explanation of CSV upload functionality -->
                         <div class="content flex flex-col gap-4 my-10">
                             <p class="text-xl">
                                 Here the input is just show how you can upload a
@@ -27,6 +31,8 @@ import { Head } from "@inertiajs/vue3";
                                 CSV file and display it below.
                             </p>
                         </div>
+
+                        <!-- File upload input and button -->
                         <div class="mb-4">
                             <input
                                 type="file"
@@ -41,8 +47,7 @@ import { Head } from "@inertiajs/vue3";
                             </button>
                         </div>
 
-                        <!-- Display Parsed Data -->
-
+                        <!-- Displaying parsed data -->
                         <div v-if="parsedData" class="mb-5 mt-8">
                             <h2 class="text-2xl font-bold mb-2">Parsed Data</h2>
                         </div>
@@ -72,20 +77,26 @@ import { Head } from "@inertiajs/vue3";
 </template>
 
 <script>
+// Exporting the component
 export default {
+    // Initializing component data
     data() {
         return {
             parsedData: null,
             file: null,
         };
     },
+    // Component methods
     methods: {
+        // Method to handle file upload event
         handleFileUpload(event) {
             this.file = event.target.files[0];
         },
+        // Method to upload file (mocked for now)
         async uploadFile() {
             // Mock upload for now
             const parsedData = [
+                // Mock data for parsed CSV
                 {
                     title: "Mr:",
                     first_name: "John",
