@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 import axios from "axios";
+import Papa from "papaparse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 const parsedData = ref([]);
@@ -44,34 +45,38 @@ const parseData = (data) => {
     let parsedPeople = [];
 
     data.forEach((name) => {
-        // Check for multiple people separated by 'and' or '&'
-        let multiplePeople = name.split(
-            /(?:\s+(?:and|&)\s+|\s+(?=(?:Mr|Mrs|Ms|Dr)))/i
-        );
-
-        multiplePeople.forEach((personStr) => {
-            let person = {};
-
-            // Use capture groups to extract title, first name, last name
-            const matches = personStr.match(
-                /\b(?<title>Mr|Mrs|Ms|Dr)\b\s+(?<first>[A-Za-z]+)\s+(?<last>[A-Za-z]+)/i
-            );
-
-            if (matches && matches.groups) {
-                const { title, first, last } = matches.groups;
-
-                // Construct person object
-                person.title = title;
-                person.first_name = first.trim();
-                person.last_name = last.trim();
-
-                // Add to parsedPeople array
-                parsedPeople.push(person);
-            }
-        });
+        // Check for multiple people separated by '&' and handle 'Dr' titles separately
+        if (name.toLowerCase().includes("dr")) {
+            const drNames = name.trim().split("&");
+            drNames.forEach((drName) => {
+                parsedPeople.push(parseName(drName.trim(), "Dr"));
+            });
+        } else {
+            parsedPeople.push(parseName(name.trim()));
+        }
     });
 
-    return parsedPeople;
+    return parsedPeople.filter((person) => Object.keys(person).length !== 0);
+};
+
+const parseName = (name, defaultTitle = "") => {
+    const matches = name.match(
+        /\b(?<title>Dr|Mr|Mrs|Ms|Prof)\b(?:\s+(?<first>[A-Za-z]+(?:\s+[A-Za-z]+)?)\s+(?<last>[A-Za-z]+))?/i
+    );
+
+    if (matches && matches.groups) {
+        const { title, first, last } = matches.groups;
+
+        // Construct person object
+        return {
+            title: title || defaultTitle,
+            first_name: first ? first.trim() : null,
+            last_name: last ? last.trim() : null,
+        };
+    } else {
+        // If no match found, return an empty object
+        return {};
+    }
 };
 </script>
 
