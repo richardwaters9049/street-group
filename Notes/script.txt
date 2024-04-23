@@ -1,0 +1,31 @@
+<script>
+    export default {
+        data() {
+        return {
+        parsedData: null,
+    file: null
+        };
+    },
+    methods: {
+        handleFileUpload(event) {
+        this.file = event.target.files[0];
+        },
+    uploadFile() {
+        let formData = new FormData();
+    formData.append('csv_file', this.file);
+
+    axios.post('/upload-csv', formData)
+                .then(response => {
+        // Handle response if needed
+        console.log(response.data);
+                    // Optionally, you can update UI or show a success message
+                })
+                .catch(error => {
+        // Handle error if needed
+        console.error(error);
+                    // Optionally, you can show an error message
+                });
+        }
+    }
+};
+</script>

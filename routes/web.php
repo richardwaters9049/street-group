@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CsvController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,5 +30,11 @@ Route::middleware('auth')->group(function () {
 // Calls upload method on App\Http\Controllers\HomeController
 Route::post('/upload', 'App\Http\Controllers\HomeController@upload');
 
+// Route for handling file uploads
+// Matches POST requests to /upload-csv
+// Calls uploadCsv method on App\Http\Controllers\CsvController
+Route::post('/upload-csv', [CsvController::class, 'uploadCsv'])->name('upload.csv');
+
+Route::post('/parse-csv', [CsvController::class, 'parseCsv'])->name('parse-csv');
 
 require __DIR__ . '/auth.php';

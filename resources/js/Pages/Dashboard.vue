@@ -33,6 +33,7 @@ import { Head } from "@inertiajs/vue3";
                         </div>
 
                         <!-- File upload input and button -->
+
                         <div class="mb-4">
                             <input
                                 type="file"
@@ -48,25 +49,18 @@ import { Head } from "@inertiajs/vue3";
                         </div>
 
                         <!-- Displaying parsed data -->
-                        <div v-if="parsedData" class="mb-5 mt-8">
+                        <div v-if="parsedData.length > 0" class="mb-5 mt-8">
                             <h2 class="text-2xl font-bold mb-2">Parsed Data</h2>
-                        </div>
-                        <div
-                            v-for="(person, index) in parsedData"
-                            :key="index"
-                            class="border p-2 mb-2"
-                        >
-                            <div v-if="person.title" class="font-bold">
-                                {{ person.title }}
-                            </div>
-                            <div v-if="person.first_name">
-                                First Name: {{ person.first_name }}
-                            </div>
-                            <div v-if="person.initial">
-                                Initial: {{ person.initial }}
-                            </div>
-                            <div v-if="person.last_name">
-                                Last Name: {{ person.last_name }}
+                            <div
+                                v-for="(person, index) in parsedData"
+                                :key="index"
+                                class="border p-2 mb-2"
+                            >
+                                <div v-for="(value, key) in person" :key="key">
+                                    <div v-if="value" class="font-bold">
+                                        {{ key }}: {{ value }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,124 +71,77 @@ import { Head } from "@inertiajs/vue3";
 </template>
 
 <script>
-// Exporting the component
+import { Head } from "@inertiajs/vue3";
+
 export default {
-    // Initializing component data
+    components: {
+        Head,
+    },
     data() {
         return {
-            parsedData: null,
+            parsedData: [],
             file: null,
         };
     },
-    // Component methods
     methods: {
-        // Method to handle file upload event
         handleFileUpload(event) {
             this.file = event.target.files[0];
         },
-        // Method to upload file (mocked for now)
-        async uploadFile() {
-            // Mock upload for now
-            const parsedData = [
-                // Mock data for parsed CSV
-                {
-                    title: "Mr:",
-                    first_name: "John",
-                    initial: null,
-                    last_name: "Smith",
-                },
-                {
-                    title: "Mrs:",
-                    first_name: "Jane",
-                    initial: null,
-                    last_name: "Smith",
-                },
-                {
-                    title: "Mister:",
-                    first_name: "John",
-                    initial: null,
-                    last_name: "Doe",
-                },
-                {
-                    title: "Mr:",
-                    first_name: "Bob",
-                    initial: null,
-                    last_name: "Lawblaw",
-                },
-                {
-                    title: "Mr:",
-                    first_name: null,
-                    initial: null,
-                    last_name: "Smith",
-                },
-                {
-                    title: "Mr:",
-                    first_name: "Craig",
-                    initial: null,
-                    last_name: "Charles",
-                },
-                {
-                    title: "Mr:",
-                    first_name: "M",
-                    initial: null,
-                    last_name: "Mackie",
-                },
-                {
-                    title: "Mrs:",
-                    first_name: "Jane",
-                    initial: null,
-                    last_name: "McMaster",
-                },
-                {
-                    title: "Mr:",
-                    first_name: "Tom",
-                    initial: null,
-                    last_name: "Staff",
-                },
-                {
-                    title: "Mr:",
-                    first_name: "John",
-                    initial: null,
-                    last_name: "Doe",
-                },
-                {
-                    title: "Dr:",
-                    first_name: "P",
-                    initial: null,
-                    last_name: "Gunn",
-                },
-                {
-                    title: "Dr:",
-                    first_name: null,
-                    initial: null,
-                    last_name: "Joe",
-                },
-                {
-                    title: "Ms:",
-                    first_name: "Claire",
-                    initial: null,
-                    last_name: "Robbo",
-                },
-                {
-                    title: "Prof:",
-                    first_name: "Alex",
-                    initial: null,
-                    last_name: "Brogan",
-                },
-                {
-                    title: "Mrs:",
-                    first_name: "Faye",
-                    initial: null,
-                    last_name: "Hughes-Eastwood",
-                },
-                {
-                    title: "Mr:",
-                    first_name: "F.",
-                    initial: null,
-                    last_name: "Fredrickson",
-                },
-            ];
-            this.parsedData = parsedData;
+        uploadFile() {
+            let reader = new FileReader();
+            reader.onload = (event) => {
+                let csvData = event.target.result;
+                this.parsedData = this.parseCsv(csvData);
+            };
+            reader.readAsText(this.file);
+        },
+        parseCsv(csvData) {
+            let parsedData = [];
+
+            let lines = csvData.split("\n");
+
+            lines.forEach((line) => {
+                let names = line.split("and");
+
+                names.forEach((name) => {
+                    let titleIndex = name.search(
+                        /(Mr|Mrs|Ms|Dr)\s+&\s+(Mr|Mrs|Ms|Dr)/i
+                    );
+                    if (titleIndex !== -1) {
+                        let titles = name.substring(titleIndex).split("&");
+                        titles.forEach((title) => {
+                            let person = {};
+                            let nameParts = title.trim().split(" ");
+
+                            if (nameParts.length > 1) {
+                                person.last_name =
+                                    nameParts[nameParts.length - 1];
+                                person.title = nameParts[0];
+                                person.first_name = nameParts
+                                    .slice(1, -1)
+                                    .join(" ");
+                                person.initial = null;
+                                parsedData.push(person);
+                            }
+                        });
+                    } else {
+                        let person = {};
+                        let nameParts = name.trim().split(" ");
+
+                        if (nameParts.length > 1) {
+                            person.last_name = nameParts[nameParts.length - 1];
+                            person.title = nameParts[0];
+                            person.first_name = nameParts
+                                .slice(1, -1)
+                                .join(" ");
+                            person.initial = null;
+                            parsedData.push(person);
+                        }
+                    }
+                });
+            });
+
+            return parsedData;
         },
     },
 };
