@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CsvController;
+use App\Http\Controllers\ParserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +36,10 @@ Route::post('/upload', 'App\Http\Controllers\HomeController@upload');
 // Calls uploadCsv method on App\Http\Controllers\CsvController
 Route::post('/upload-csv', [CsvController::class, 'uploadCsv'])->name('upload.csv');
 
-Route::post('/parse-csv', [CsvController::class, 'parseCsv'])->name('parse-csv');
+// Route::post('/parse-csv', [CsvController::class, 'parseCsv'])->name('parse-csv');
+
+Route::get('/parse-csv/{filename}', [ParserController::class, 'parseCSVFile'])->name('parse.csv');
+
+
 
 require __DIR__ . '/auth.php';
