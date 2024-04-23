@@ -1,6 +1,78 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { ref } from "vue";
 import { Head } from "@inertiajs/vue3";
+import axios from "axios";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
+const parsedData = ref([]);
+const file = ref(null);
+
+const handleFileUpload = (event) => {
+    file.value = event.target.files[0];
+};
+
+const uploadFile = () => {
+    let formData = new FormData();
+    formData.append("csv_file", file.value);
+
+    axios
+        .post("/upload-csv", formData)
+        .then((response) => {
+            console.log(response.data);
+            // Fetch parsed data after successful upload
+            parseCSV(response.data.filename);
+        })
+        .catch((error) => {
+            console.log(error.response);
+            // Handle error response
+        });
+};
+
+const parseCSV = (filename) => {
+    axios
+        .get(`/parse-csv/${filename}`)
+        .then((response) => {
+            parsedData.value = parseData(response.data);
+        })
+        .catch((error) => {
+            console.error(error);
+            // Handle error response
+        });
+};
+
+const parseData = (data) => {
+    let parsedPeople = [];
+
+    data.forEach((name) => {
+        // Check for multiple people separated by 'and' or '&'
+        let multiplePeople = name.split(
+            /(?:\s+(?:and|&)\s+|\s+(?=(?:Mr|Mrs|Ms|Dr)))/i
+        );
+
+        multiplePeople.forEach((personStr) => {
+            let person = {};
+
+            // Use capture groups to extract title, first name, last name
+            const matches = personStr.match(
+                /\b(?<title>Mr|Mrs|Ms|Dr)\b\s+(?<first>[A-Za-z]+)\s+(?<last>[A-Za-z]+)/i
+            );
+
+            if (matches && matches.groups) {
+                const { title, first, last } = matches.groups;
+
+                // Construct person object
+                person.title = title;
+                person.first_name = first.trim();
+                person.last_name = last.trim();
+
+                // Add to parsedPeople array
+                parsedPeople.push(person);
+            }
+        });
+    });
+
+    return parsedPeople;
+};
 </script>
 
 <template>
@@ -76,73 +148,6 @@ import { Head } from "@inertiajs/vue3";
 export default {
     components: {
         Head,
-    },
-    data() {
-        return {
-            parsedData: [],
-            file: null,
-        };
-    },
-    methods: {
-        handleFileUpload(event) {
-            this.file = event.target.files[0];
-        },
-        uploadFile() {
-            let reader = new FileReader();
-            reader.onload = (event) => {
-                let csvData = event.target.result;
-                this.parsedData = this.parseCsv(csvData);
-            };
-            reader.readAsText(this.file);
-        },
-        parseCsv(csvData) {
-            let parsedData = [];
-
-            let lines = csvData.split("\n");
-
-            lines.forEach((line) => {
-                let names = line.split("and");
-
-                names.forEach((name) => {
-                    let titleIndex = name.search(
-                        /(Mr|Mrs|Ms|Dr)\s+&\s+(Mr|Mrs|Ms|Dr)/i
-                    );
-                    if (titleIndex !== -1) {
-                        let titles = name.substring(titleIndex).split("&");
-                        titles.forEach((title) => {
-                            let person = {};
-                            let nameParts = title.trim().split(" ");
-
-                            if (nameParts.length > 1) {
-                                person.last_name =
-                                    nameParts[nameParts.length - 1];
-                                person.title = nameParts[0];
-                                person.first_name = nameParts
-                                    .slice(1, -1)
-                                    .join(" ");
-                                person.initial = null;
-                                parsedData.push(person);
-                            }
-                        });
-                    } else {
-                        let person = {};
-                        let nameParts = name.trim().split(" ");
-
-                        if (nameParts.length > 1) {
-                            person.last_name = nameParts[nameParts.length - 1];
-                            person.title = nameParts[0];
-                            person.first_name = nameParts
-                                .slice(1, -1)
-                                .join(" ");
-                            person.initial = null;
-                            parsedData.push(person);
-                        }
-                    }
-                });
-            });
-
-            return parsedData;
-        },
     },
 };
 </script>
