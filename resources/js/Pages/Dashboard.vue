@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 import axios from "axios";
-import Papa from "papaparse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 const parsedData = ref([]);
@@ -44,16 +43,59 @@ const parseCSV = (filename) => {
 const parseData = (data) => {
     let parsedPeople = [];
 
-    data.forEach((name) => {
-        // Check for multiple people separated by '&' and handle 'Dr' titles separately
-        if (name.toLowerCase().includes("dr")) {
-            const drNames = name.trim().split("&");
-            drNames.forEach((drName) => {
-                parsedPeople.push(parseName(drName.trim(), "Dr"));
-            });
-        } else {
-            parsedPeople.push(parseName(name.trim()));
-        }
+    data.forEach((line) => {
+        // Split the line into individual names at "and" or "&"
+        const names = line.split(/\b(?:and|&)\b/i);
+
+        names.forEach((name) => {
+            // Check if the name contains a title
+            const matches = name.match(/\b(?:Dr|Mr|Mrs|Ms|Prof)\b/i);
+            let title = null;
+            if (matches) {
+                title = matches[0];
+                // Remove the title from the name
+                name = name.replace(matches[0], "").trim();
+            }
+
+            // Parse each individual's name
+            let parsedName = parseName(
+                (title ? title + " " : "") + name.trim()
+            );
+
+            // If there's no first name and the line contains "and" or "&",
+            // create separate entries for each title and the last name
+            if (
+                !parsedName.first_name &&
+                (line.includes(" and ") || line.includes(" & "))
+            ) {
+                // Create separate entries for each title and the last name
+                if (title) {
+                    parsedPeople.push({
+                        title: title,
+                        first_name: null,
+                        last_name: parsedName.last_name,
+                    });
+                }
+            } else {
+                // If there's only one first name or last name, assign it to all individuals
+                if (
+                    !parsedName.first_name &&
+                    parsedPeople.length > 0 &&
+                    parsedPeople[0].first_name
+                ) {
+                    parsedName.first_name = parsedPeople[0].first_name;
+                }
+                if (
+                    !parsedName.last_name &&
+                    parsedPeople.length > 0 &&
+                    parsedPeople[0].last_name
+                ) {
+                    parsedName.last_name = parsedPeople[0].last_name;
+                }
+
+                parsedPeople.push(parsedName);
+            }
+        });
     });
 
     return parsedPeople.filter((person) => Object.keys(person).length !== 0);
@@ -61,7 +103,7 @@ const parseData = (data) => {
 
 const parseName = (name, defaultTitle = "") => {
     const matches = name.match(
-        /\b(?<title>Dr|Mr|Mrs|Ms|Prof)\b(?:\s+(?<first>[A-Za-z]+(?:\s+[A-Za-z]+)?)\s+(?<last>[A-Za-z]+))?/i
+        /\b(?<title>Dr|Mr|Mrs|Ms|Prof|Mister)\b(?:\s+(?<first>[A-Za-z]+(?:\s+[A-Za-z]+)?)\s+(?<last>[A-Za-z]+))?/i
     );
 
     if (matches && matches.groups) {
@@ -98,7 +140,9 @@ const parseName = (name, defaultTitle = "") => {
                         </h1>
 
                         <!-- Explanation of CSV upload functionality -->
-                        <div class="content flex flex-col gap-4 my-10">
+                        <div
+                            class="content flex flex-col gap-4 my-10 justify-center items-center"
+                        >
                             <p class="text-xl">
                                 Here the input is just show how you can upload a
                                 CSV file.
@@ -111,7 +155,9 @@ const parseName = (name, defaultTitle = "") => {
 
                         <!-- File upload input and button -->
 
-                        <div class="mb-4">
+                        <div
+                            class="mb-4 flex flex-row justify-center items-center"
+                        >
                             <input
                                 type="file"
                                 @change="handleFileUpload"
