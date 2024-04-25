@@ -44,6 +44,12 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 
 -   My project uses bun but npm should still work fine.
 
+Once the project is up and running you can create a dummy admin using the register page. You can then log in using the dummy admin credentials.
+
+Example: username: admin
+email: admin@admin.com
+password: (This must be at least 8 characters long.)
+
 ## Dependencies
 
 -   **Laravel Breeze**: Provides simple authentication scaffolding.
