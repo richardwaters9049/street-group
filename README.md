@@ -46,7 +46,7 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 
 3. Install JavaScript dependencies using npm or yarn: `npm install` or `yarn install`.
 
--   My project uses bun but npm should still work fine.
+-   My project uses bun but npm will still work fine.
 
 4. I have included a .env already configured for the project. If you wish to use your own database, you can update the.env file with your database credentials.
 
