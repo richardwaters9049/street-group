@@ -1,6 +1,6 @@
 # Laravel CSV Data Parsing Dashboard
 
-![Login](/images/login-page.png)
+![Login](/public/images/login-page.png)
 
 This project is a Laravel application that provides a dashboard for parsing and displaying data from CSV files. It utilizes Laravel Breeze for authentication, Inertia.js for client-side rendering, Vue.js for dynamic interactivity, and Tailwind CSS for styling.
 
