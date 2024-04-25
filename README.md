@@ -44,12 +44,6 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 
 -   My project uses bun but npm should still work fine.
 
-4. Configure your environment variables by copying the `.env.example` file to `.env` and updating the necessary values.
-5. Generate an application key: `php artisan key:generate`.
-6. Run database migrations: `php artisan migrate`.
-7. Serve the application: `php artisan serve`.
-8. Access the application in your web browser.
-
 ## Dependencies
 
 -   **Laravel Breeze**: Provides simple authentication scaffolding.
