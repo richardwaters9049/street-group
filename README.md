@@ -7,9 +7,13 @@ This project is a Laravel application that provides a dashboard for parsing and 
 ## Features
 
 -   **Authentication**: Users can log in securely using Laravel Breeze authentication.
+
 -   **CSV Upload**: Users can upload CSV files containing data to be parsed and displayed.
+
 -   **Data Parsing**: Upon uploading a CSV file, the application parses the data and displays it below the upload section.
+
 -   **Dynamic Display**: Parsed data is dynamically rendered on the dashboard using Vue.js, allowing for smooth interaction without page reloads.
+
 -   **Tailwind Styling**: The dashboard is styled using Tailwind CSS, providing a clean and responsive interface.
 
 ## How it Works
@@ -19,30 +23,38 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 ### Dashboard Components
 
 -   **File Upload**: Users can select a CSV file using the file input field and upload it by clicking the "Upload CSV" button.
+
 -   **Parsed Data Display**: Parsed data from the uploaded CSV file is displayed below the upload section. Each entry in the CSV file is displayed in a structured format, showing relevant information.
 
 ### Code Overview
 
 -   **Dashboard Component**: The dashboard is implemented using Vue.js and Inertia.js, allowing for a dynamic and reactive user interface.
+
 -   **CSV Upload Handling**: The uploaded CSV file is processed on the server-side using Laravel controllers. The `CsvController` handles the file upload, while the `ParserController` parses the CSV data.
+
 -   **Data Parsing Logic**: The parsing logic is implemented in the `ParserController`. It reads the uploaded CSV file, processes each row of data, and returns the parsed data to the client.
+
 -   **Database Integration**: In a real-world scenario, instead of saving CSV files to a public directory, you would likely save the parsed data to a database. This can be achieved by modifying the `CsvController` and `ParserController` to store the data in your preferred database.
 
 ## Getting Started
 
-1. Clone the repository to your local machine.
-2. For this project I'm assuming you already have composer and node already installed. If not, you can follow the instructions on the official Laravel website: https://laravel.com/docs/8.x#installation.
+1. Clone the repository to your local machine with `git clone https://github.com/richardwaters9049/street-group.git` or download it as a ZIP file.
+
+-   For this project I'm assuming you already have composer and node already installed. If not, you can follow the instructions on the official Laravel website: https://laravel.com/docs/8.x#installation.
+
+2. CD into the project directory and run `composer install` to install PHP dependencies.
+
 3. Install JavaScript dependencies using npm or yarn: `npm install` or `yarn install`.
 
--   I have created this command to install your dependencies and run the project.
-
-    bun install && bun run dev && php artisan serve
-
-    or
-
-    npm install && npm run dev && php artisan serve
-
 -   My project uses bun but npm should still work fine.
+
+4. I have included a .env already configured for the project. If you wish to use your own database, you can update the.env file with your database credentials.
+
+5. Generate an application key: `php artisan key:generate`.
+
+6. Run database migrations: `php artisan migrate`.
+
+7. Run the programme: `php artisan serve` and `npm run dev`.
 
 Once the project is up and running you can create a dummy admin using the register page. You can then log in using the dummy admin credentials.
 
@@ -62,6 +74,8 @@ password: (This must be at least 8 characters long.)
 Here I have provided links to the Dashboard view, CSV Upload controller and the CSV Parse controller.
 
 -   [Dashboard View](https://github.com/richardwaters9049/street-group/blob/main/resources/js/Pages/Dashboard.vue)
+
+![Dashboard](/public/images/dash.png)
 
 -   [CSV Upload Controller](https://github.com/richardwaters9049/street-group/blob/main/app/Http/Controllers/CsvController.php)
 
