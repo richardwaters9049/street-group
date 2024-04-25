@@ -1,43 +1,53 @@
-# Street Group Homeowners Task
+# Laravel CSV Data Parsing Dashboard
 
-## A Laravel project with Breeze, Inertia and VueJS and Tailwind.
+This project is a Laravel application that provides a dashboard for parsing and displaying data from CSV files. It utilizes Laravel Breeze for authentication, Inertia.js for client-side rendering, Vue.js for dynamic interactivity, and Tailwind CSS for styling.
 
-### HomeController.php
+## Features
 
-The **`HomeController`** class extends the **`Controller`** class. It defines a single method called **`upload`**, which is responsible for handling the upload of a file.
+-   **Authentication**: Users can log in securely using Laravel Breeze authentication.
+-   **CSV Upload**: Users can upload CSV files containing data to be parsed and displayed.
+-   **Data Parsing**: Upon uploading a CSV file, the application parses the data and displays it below the upload section.
+-   **Dynamic Display**: Parsed data is dynamically rendered on the dashboard using Vue.js, allowing for smooth interaction without page reloads.
+-   **Tailwind Styling**: The dashboard is styled using Tailwind CSS, providing a clean and responsive interface.
 
--   The **`upload`** method takes a **`Request`** object as a parameter.
--   Inside the method, a mock array of parsed data is created.
--   The parsed data is then returned as a JSON response using the **`response()->json()`** method.
+## How it Works
 
-In summary, the **`HomeController`** class provides a route for uploading a file and returns the parsed data in JSON format.
+Upon logging in, users are presented with a dashboard where they can upload a CSV file. Once a CSV file is selected and uploaded, the application parses the data and displays it below the upload section.
 
-### web.php
+### Dashboard Components
 
-In this file, we define a POST route in Laravel that handles file uploads.
+-   **File Upload**: Users can select a CSV file using the file input field and upload it by clicking the "Upload CSV" button.
+-   **Parsed Data Display**: Parsed data from the uploaded CSV file is displayed below the upload section. Each entry in the CSV file is displayed in a structured format, showing relevant information.
 
-Specifically:
+### Code Overview
 
--   `Route::post` defines a POST route
--   `/upload` is the URI that will match this route
--   `'App\Http\Controllers\HomeController@upload'` is the controller action that will handle the request
-    -   `App\Http\Controllers\HomeController` references the HomeController class
-    -   `@upload` calls the `upload()` method on that controller
+-   **Dashboard Component**: The dashboard is implemented using Vue.js and Inertia.js, allowing for a dynamic and reactive user interface.
+-   **CSV Upload Handling**: The uploaded CSV file is processed on the server-side using Laravel controllers. The `CsvController` handles the file upload, while the `ParserController` parses the CSV data.
+-   **Data Parsing Logic**: The parsing logic is implemented in the `ParserController`. It reads the uploaded CSV file, processes each row of data, and returns the parsed data to the client.
+-   **Database Integration**: In a real-world scenario, instead of saving CSV files to a public directory, you would likely save the parsed data to a database. This can be achieved by modifying the `CsvController` and `ParserController` to store the data in your preferred database.
 
-So in summary, this route is mapping POST requests to `/upload` to the `upload()` method on the `HomeController`. This is likely handling file uploads submitted from a form on the front end.
+## Getting Started
 
-The `upload()` method will probably accept the uploaded file, validate it, store it somewhere, and return a response to the front end.
+1. Clone the repository to your local machine.
+2. Install PHP dependencies using Composer: `composer install`.
+3. Install JavaScript dependencies using npm or yarn: `npm install` or `yarn install`.
+4. Configure your environment variables by copying the `.env.example` file to `.env` and updating the necessary values.
+5. Generate an application key: `php artisan key:generate`.
+6. Run database migrations: `php artisan migrate`.
+7. Serve the application: `php artisan serve`.
+8. Access the application in your web browser.
 
-Common things you'd see in an upload controller action:
+## Dependencies
 
--   Accepting the uploaded file from `$request->file('name')`
--   Validating file size, type, etc.
--   Saving the file to storage
--   Creating a database record for the upload
--   Returning a response indicating success/failure
+-   **Laravel Breeze**: Provides simple authentication scaffolding.
+-   **Inertia.js**: Allows for client-side rendering with server-side controllers.
+-   **Vue.js**: JavaScript framework for building user interfaces.
+-   **Tailwind CSS**: Utility-first CSS framework for styling.
 
-So this single line sets up the routing to handle a file upload process in a Laravel app.
+## Contributing
 
-### Dashboard.vue
+Contributions are welcome! Feel free to submit bug reports, feature requests, or pull requests to improve the project.
 
-For demonstration purposes, I have included the script within the Dashboard to parse the data as if it was using a POST request, to achieve this I just created an event when the user clicks the Upload CSV button.
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
