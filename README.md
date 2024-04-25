@@ -60,9 +60,9 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 
 Once the project is up and running you can create a dummy admin using the register page. You can then log in using the dummy admin credentials.
 
--   Example: username: admin
--   email: admin@admin.com
--   password: (This must be at least 8 characters long.)
+-   Username: admin
+-   Email: admin@admin.com
+-   Password: (This must be at least 8 characters long.)
 
 ## Dependencies
 
