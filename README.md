@@ -56,11 +56,13 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 
 7. Run the programme: `php artisan serve` and `npm run dev`.
 
+8. The project will now be running at: http://127.0.0.1:8000
+
 Once the project is up and running you can create a dummy admin using the register page. You can then log in using the dummy admin credentials.
 
-Example: username: admin
-email: admin@admin.com
-password: (This must be at least 8 characters long.)
+-   Example: username: admin
+-   email: admin@admin.com
+-   password: (This must be at least 8 characters long.)
 
 ## Dependencies
 
