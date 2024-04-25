@@ -75,7 +75,9 @@ Once the project is up and running you can create a dummy admin using the regist
 
 ## Links To Relevant Code
 
-Here I have provided links to the Dashboard view, CSV Upload controller and the CSV Parse controller.
+Here I have provided links to the Dashboard view, CSV Upload controller and the CSV Parse controller, I have also provided an example CSV file that you can use to upload and test the application.
+
+-   [Example CSV File](https://github.com/richardwaters9049/street-group/blob/main/resources/js/Pages/Dashboard.vue)
 
 -   [Dashboard View](https://github.com/richardwaters9049/street-group/blob/main/resources/js/Pages/Dashboard.vue)
 
