@@ -31,8 +31,19 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 ## Getting Started
 
 1. Clone the repository to your local machine.
-2. Install PHP dependencies using Composer: `composer install`.
+2. For this project I'm assuming you already have composer and node already installed. If not, you can follow the instructions on the official Laravel website: https://laravel.com/docs/8.x#installation.
 3. Install JavaScript dependencies using npm or yarn: `npm install` or `yarn install`.
+
+-   I have created this command to install your dependencies and run the project.
+
+    bun install && bun run dev && php artisan serve
+
+    or
+
+    npm install && npm run dev && php artisan serve
+
+-   My project uses bun but npm should still work fine.
+
 4. Configure your environment variables by copying the `.env.example` file to `.env` and updating the necessary values.
 5. Generate an application key: `php artisan key:generate`.
 6. Run database migrations: `php artisan migrate`.
@@ -46,10 +57,12 @@ Upon logging in, users are presented with a dashboard where they can upload a CS
 -   **Vue.js**: JavaScript framework for building user interfaces.
 -   **Tailwind CSS**: Utility-first CSS framework for styling.
 
-## Contributing
+## Links To Relevant Code
 
-Contributions are welcome! Feel free to submit bug reports, feature requests, or pull requests to improve the project.
+Here I have provided links to the Dashboard view, CSV Upload controller and the CSV Parse controller.
 
-## License
+-   [Dashboard View](https://github.com/richardwaters9049/street-group/blob/main/resources/js/Pages/Dashboard.vue)
 
-This project is open-source and available under the [MIT License](LICENSE).
+-   [CSV Upload Controller](https://github.com/richardwaters9049/street-group/blob/main/app/Http/Controllers/CsvController.php)
+
+-   [CSV Parse Controller](https://github.com/richardwaters9049/street-group/blob/main/app/Http/Controllers/ParserController.php)
