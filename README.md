@@ -1,6 +1,6 @@
 # Laravel CSV Data Parsing Dashboard
 
-![Login](/public/images/login-page.png)
+![Home](/public/images/home.png)
 
 This project is a Laravel application that provides a dashboard for parsing and displaying data from CSV files. It utilizes Laravel Breeze for authentication, Inertia.js for client-side rendering, Vue.js for dynamic interactivity, and Tailwind CSS for styling.
 
@@ -63,6 +63,8 @@ Once the project is up and running you can create a dummy admin using the regist
 -   Username: admin
 -   Email: admin@admin.com
 -   Password: (This must be at least 8 characters long.)
+
+![Login](/public/images/login-page.png)
 
 ## Dependencies
 
